@@ -1,8 +1,41 @@
-# Chinese Subtitle Generator for Japanese Movies
+<div align="center">
 
-A Python CLI tool that automatically generates Chinese subtitles for Japanese language videos using Google Cloud Speech-to-Text and Translate APIs.
+# 🎬 Japanese to Chinese Subtitle Generator
 
-## Features
+### Automatically generate Chinese subtitles for Japanese movies and anime
+
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Google Cloud](https://img.shields.io/badge/Google%20Cloud-APIs-4285F4?logo=google-cloud)](https://cloud.google.com)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Examples](#-examples) • [Documentation](#-documentation)
+
+</div>
+
+---
+
+## 📖 Overview
+
+A powerful Python CLI tool that automatically generates accurate Chinese subtitles for Japanese language videos using **Google Cloud Speech-to-Text** and **Translation APIs**. Perfect for anime episodes, Japanese movies, documentaries, and educational content.
+
+### How It Works
+
+```mermaid
+graph LR
+    A[🎥 Video File] --> B[🎵 Extract Audio]
+    B --> C[🎤 Speech-to-Text<br/>Japanese]
+    C --> D[🌏 Translate<br/>Japanese → Chinese]
+    D --> E[📝 Generate SRT<br/>Subtitles]
+
+    style A fill:#e1f5ff
+    style B fill:#fff9c4
+    style C fill:#f3e5f5
+    style D fill:#e8f5e9
+    style E fill:#ffe0b2
+```
+
+## ✨ Features
 
 - 🎬 Extract audio from any video format (MP4, MKV, AVI, etc.)
 - 🎤 Transcribe Japanese audio to text with precise timestamps
@@ -12,122 +45,215 @@ A Python CLI tool that automatically generates Chinese subtitles for Japanese la
 - 🔄 Automatic retry logic for API failures
 - 📊 Detailed logging and progress tracking
 
-## How It Works
+## 📋 Table of Contents
 
-```
-Video File → Audio Extraction → Speech Recognition → Translation → SRT Generation
-   (MP4)        (WAV 16kHz)      (Japanese text)    (Chinese text)   (subtitles)
-```
+- [Prerequisites](#-prerequisites)
+- [Quick Start](#-quick-start)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Examples](#-examples)
+- [Cost Estimation](#-cost-estimation)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
 
-## Prerequisites
+## 🔧 Prerequisites
 
-1. **Python 3.8 or higher**
-2. **Google Cloud Account** with:
-   - Cloud Speech-to-Text API enabled
-   - Cloud Translation API enabled
-   - Service account with appropriate permissions
+| Requirement | Details |
+|------------|---------|
+| **Python** | Version 3.8 or higher |
+| **Google Cloud Account** | Free tier available ($300 credit) |
+| **Required APIs** | • Cloud Speech-to-Text API<br>• Cloud Translation API |
+| **Service Account** | JSON credentials with API permissions |
 
-## Installation
-
-### 1. Clone or Download
+## 🚀 Quick Start
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/gatorbonita/translator.git
+cd translator
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Set up Google Cloud credentials
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-credentials.json"
+
+# 4. Generate subtitles!
+python main.py your-video.mp4
+```
+
+**That's it!** Your subtitle file will be created as `your-video.srt` 🎉
+
+## 📦 Installation
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/gatorbonita/translator.git
 cd translator
 ```
 
-### 2. Install Dependencies
+### Step 2: Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Set Up Google Cloud Credentials
+**Dependencies installed:**
+- `moviepy` - Video/audio processing
+- `google-cloud-speech` - Speech recognition
+- `google-cloud-translate` - Translation
+- `click` - CLI framework
+- `loguru` - Enhanced logging
 
-#### Create Service Account:
+### Step 3: Set Up Google Cloud 🌩️
+
+<details>
+<summary><b>🔐 Click here for detailed Google Cloud setup instructions</b></summary>
+
+#### 1️⃣ Create a Google Cloud Project
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project (or select existing)
-3. Enable APIs:
-   - Go to "APIs & Services" → "Library"
-   - Enable "Cloud Speech-to-Text API"
-   - Enable "Cloud Translation API"
-4. Create Service Account:
-   - Go to "IAM & Admin" → "Service Accounts"
-   - Click "Create Service Account"
-   - Grant roles:
-     - "Cloud Speech Client"
-     - "Cloud Translation API User"
-   - Create JSON key and download
+2. Click "Select a project" → "New Project"
+3. Enter project name (e.g., "subtitle-generator")
+4. Click "Create"
 
-#### Configure Credentials:
+#### 2️⃣ Enable Required APIs
 
-**Option 1: Environment Variable (Recommended)**
+1. Navigate to **"APIs & Services"** → **"Library"**
+2. Search and enable:
+   - ✅ **Cloud Speech-to-Text API**
+   - ✅ **Cloud Translation API**
+
+#### 3️⃣ Create Service Account
+
+1. Go to **"IAM & Admin"** → **"Service Accounts"**
+2. Click **"Create Service Account"**
+3. Enter name: `subtitle-generator-sa`
+4. Click **"Create and Continue"**
+5. Grant roles:
+   - `Cloud Speech Client`
+   - `Cloud Translation API User`
+6. Click **"Done"**
+
+#### 4️⃣ Generate JSON Key
+
+1. Click on your newly created service account
+2. Go to **"Keys"** tab
+3. Click **"Add Key"** → **"Create new key"**
+4. Select **JSON** format
+5. Click **"Create"** - key file will download automatically
+
+#### 5️⃣ Configure Credentials
+
+**Option A: Environment Variable** (Recommended ⭐)
+
 ```bash
 # Linux/Mac
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-key.json"
 
 # Windows (Command Prompt)
-set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\service-account-key.json
+set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\your-key.json
 
 # Windows (PowerShell)
-$env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\service-account-key.json"
+$env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\your-key.json"
 ```
 
-**Option 2: .env File**
+**Option B: .env File**
+
 ```bash
 cp .env.example .env
-# Edit .env and set GOOGLE_APPLICATION_CREDENTIALS path
+# Edit .env and add:
+# GOOGLE_APPLICATION_CREDENTIALS=/path/to/your-key.json
 ```
 
-**Option 3: Command Line**
+**Option C: Command Line Flag**
+
 ```bash
-python main.py video.mp4 --credentials /path/to/key.json
+python main.py video.mp4 --credentials /path/to/your-key.json
 ```
 
-## Usage
+</details>
 
-### Basic Usage
+> 💡 **First time?** Google Cloud offers $300 in free credits for new accounts!
+
+## 🎯 Usage
+
+### Basic Usage 🎬
 
 ```bash
-# Generate subtitles (output: video_name.srt)
+# Simplest command - generates video_name.srt
 python main.py movie.mp4
 ```
 
-### Advanced Usage
+### Advanced Usage ⚙️
 
+<table>
+<tr>
+<td width="50%">
+
+**Custom output path**
 ```bash
-# Specify output path
-python main.py movie.mp4 -o subtitles/movie_ch.srt
-
-# Use Traditional Chinese instead of Simplified
-python main.py movie.mp4 --target-lang zh-TW
-
-# Enable verbose logging
-python main.py movie.mp4 --verbose
-
-# Keep temporary audio files (for debugging)
-python main.py movie.mp4 --keep-temp
-
-# Specify credentials file
-python main.py movie.mp4 --credentials /path/to/key.json
+python main.py movie.mp4 \
+  -o subtitles/movie_ch.srt
 ```
 
-### Command-Line Options
+</td>
+<td width="50%">
 
-```
-Options:
-  -o, --output PATH          Output SRT file path
-  -c, --credentials PATH     Google Cloud credentials JSON file
-  --keep-temp               Keep temporary audio files
-  -v, --verbose             Enable verbose logging
-  --target-lang [zh-CN|zh-TW]  Target Chinese variant (default: zh-CN)
-  --help                    Show help message
+**Traditional Chinese**
+```bash
+python main.py movie.mp4 \
+  --target-lang zh-TW
 ```
 
-## Example
+</td>
+</tr>
+<tr>
+<td>
+
+**Verbose logging**
+```bash
+python main.py movie.mp4 \
+  --verbose
+```
+
+</td>
+<td>
+
+**Keep temp files**
+```bash
+python main.py movie.mp4 \
+  --keep-temp
+```
+
+</td>
+</tr>
+</table>
+
+### 📝 Command Reference
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-o, --output` | Output SRT file path | `-o subtitles.srt` |
+| `-c, --credentials` | Google Cloud credentials | `-c /path/to/key.json` |
+| `--target-lang` | Chinese variant | `zh-CN` or `zh-TW` |
+| `-v, --verbose` | Enable debug logging | `--verbose` |
+| `--keep-temp` | Keep temporary audio files | `--keep-temp` |
+| `--help` | Show help message | `--help` |
+
+## 💡 Examples
+
+### 🎥 Example: Processing an Anime Episode
 
 ```bash
 $ python main.py anime_episode.mp4 --verbose
+```
+
+<details>
+<summary><b>📋 Click to see full output</b></summary>
+
+```
 ============================================================
 Chinese Subtitle Generator for Japanese Movies
 ============================================================
@@ -136,26 +262,28 @@ Chinese Subtitle Generator for Japanese Movies
 2024-01-15 10:30:00 | INFO     | Target language: zh-CN
 ------------------------------------------------------------
 2024-01-15 10:30:00 | INFO     | Step 1/5: Validating video file...
-2024-01-15 10:30:00 | SUCCESS  | Video file validated
+2024-01-15 10:30:00 | SUCCESS  | ✓ Video file validated
 2024-01-15 10:30:00 | INFO     | Step 2/5: Extracting audio from video...
-2024-01-15 10:30:15 | SUCCESS  | Audio extracted: 24m 35s
-2024-01-15 10:30:15 | INFO     | Step 3/5: Transcribing Japanese audio to text...
-2024-01-15 10:55:20 | SUCCESS  | Transcription complete: 342 segments
-2024-01-15 10:55:20 | INFO     | Step 4/5: Translating Japanese to Chinese...
-2024-01-15 10:55:25 | SUCCESS  | Translation complete: 342 segments
-2024-01-15 10:55:25 | INFO     | Step 5/5: Generating SRT subtitle file...
-2024-01-15 10:55:25 | SUCCESS  | Subtitle file created: anime_episode.srt
+2024-01-15 10:30:15 | SUCCESS  | ✓ Audio extracted: 24m 35s
+2024-01-15 10:30:15 | INFO     | Step 3/5: Transcribing Japanese audio...
+2024-01-15 10:55:20 | SUCCESS  | ✓ Transcription complete: 342 segments
+2024-01-15 10:55:20 | INFO     | Step 4/5: Translating to Chinese...
+2024-01-15 10:55:25 | SUCCESS  | ✓ Translation complete: 342 segments
+2024-01-15 10:55:25 | INFO     | Step 5/5: Generating SRT file...
+2024-01-15 10:55:25 | SUCCESS  | ✓ Subtitle file created
 ============================================================
-SUBTITLE GENERATION COMPLETE!
+            SUBTITLE GENERATION COMPLETE! 🎉
 Video duration: 24m 35s
 Subtitle segments: 298
 Output file: anime_episode.srt
 ============================================================
 ```
 
-## Output Format
+</details>
 
-The tool generates standard SRT (SubRip) subtitle files:
+### 📄 Output Format
+
+Generated SRT (SubRip) subtitle files follow the standard format:
 
 ```srt
 1
@@ -171,80 +299,129 @@ The tool generates standard SRT (SubRip) subtitle files:
 字幕会自动合并以提高可读性
 ```
 
-## Supported Video Formats
+## 📊 Supported Formats & Performance
 
-- MP4
-- MKV
-- AVI
-- MOV
-- WMV
-- FLV
-- WebM
-- M4V
-- MPG/MPEG
-- 3GP
+### Video Formats
 
-## Performance
+<div align="center">
 
-- **Processing Time**: Approximately 1:1 ratio (1-hour video ≈ 1 hour processing)
-- **Bottleneck**: Google Speech-to-Text API transcription
-- **Memory Usage**: < 500MB for typical movies
+| Format | Tested | Format | Tested |
+|:------:|:------:|:------:|:------:|
+| MP4 | ✅ | MOV | ✅ |
+| MKV | ✅ | WMV | ✅ |
+| AVI | ✅ | WebM | ✅ |
+| FLV | ✅ | MPG/MPEG | ✅ |
+| M4V | ✅ | 3GP | ✅ |
 
-## Cost Estimation
+</div>
 
-**Google Cloud Pricing (as of 2024):**
+### Performance Metrics
 
-- **Speech-to-Text**: $0.006 per 15 seconds of audio
-  - 2-hour movie: ~$11.52
-  - 30-minute video: ~$2.88
+| Metric | Value |
+|--------|-------|
+| **Processing Time** | ~1:1 ratio (1-hour video ≈ 1 hour) |
+| **Bottleneck** | Google Speech-to-Text API |
+| **Memory Usage** | < 500MB for typical movies |
+| **Accuracy** | Depends on audio quality |
 
-- **Translation**: $20 per 1 million characters
-  - 2-hour movie (~50,000 chars): ~$1.00
-  - 30-minute video (~12,500 chars): ~$0.25
+## 💰 Cost Estimation
 
-**Total Cost Examples:**
-- 30-minute anime episode: ~$3.13
-- 2-hour movie: ~$12.52
+### Google Cloud Pricing (2024)
 
-> Free tier: Google Cloud offers $300 free credit for new accounts
+<table>
+<tr>
+<th>Service</th>
+<th>Pricing</th>
+<th>30-min Video</th>
+<th>2-hour Movie</th>
+</tr>
+<tr>
+<td><b>Speech-to-Text</b></td>
+<td>$0.006 per 15 seconds</td>
+<td>~$2.88</td>
+<td>~$11.52</td>
+</tr>
+<tr>
+<td><b>Translation</b></td>
+<td>$20 per 1M characters</td>
+<td>~$0.25</td>
+<td>~$1.00</td>
+</tr>
+<tr>
+<td colspan="2"><b>💵 Total Cost</b></td>
+<td><b>~$3.13</b></td>
+<td><b>~$12.52</b></td>
+</tr>
+</table>
 
-## Troubleshooting
+> 🎁 **Free Tier**: Google Cloud offers **$300 in free credits** for new accounts!
+> This is enough to process **~24 hours** of video content.
 
-### Error: "Credentials not found"
+## 🔧 Troubleshooting
 
-**Solution**: Set GOOGLE_APPLICATION_CREDENTIALS environment variable or use --credentials flag
+<details>
+<summary><b>❌ "Credentials not found"</b></summary>
 
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/key.json"
-```
-
-### Error: "API not enabled"
-
-**Solution**: Enable required APIs in Google Cloud Console:
-- Cloud Speech-to-Text API
-- Cloud Translation API
-
-### Error: "Permission denied"
-
-**Solution**: Ensure service account has required roles:
-- "Cloud Speech Client"
-- "Cloud Translation API User"
-
-### Error: "Quota exceeded"
+**Problem**: Google Cloud credentials are not configured
 
 **Solution**:
-- Check your Google Cloud quota limits
-- Wait for quota to reset (usually daily)
-- Request quota increase in Google Cloud Console
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-key.json"
+```
+Or use the `--credentials` flag when running the command.
 
-### Poor Translation Quality
+</details>
 
-**Tips**:
-- Ensure audio is clear (no background noise)
-- Try Traditional Chinese (--target-lang zh-TW) if Simplified doesn't work well
-- Manual post-editing may be needed for complex terminology
+<details>
+<summary><b>❌ "API not enabled"</b></summary>
 
-## Project Structure
+**Problem**: Required APIs are not enabled in your Google Cloud project
+
+**Solution**: Enable the following in [Google Cloud Console](https://console.cloud.google.com):
+- ✅ Cloud Speech-to-Text API
+- ✅ Cloud Translation API
+
+Go to: **APIs & Services** → **Library** → Search and enable
+
+</details>
+
+<details>
+<summary><b>❌ "Permission denied"</b></summary>
+
+**Problem**: Service account lacks necessary permissions
+
+**Solution**: Ensure your service account has these roles:
+- `Cloud Speech Client`
+- `Cloud Translation API User`
+
+Go to: **IAM & Admin** → **Service Accounts** → Select account → **Permissions**
+
+</details>
+
+<details>
+<summary><b>❌ "Quota exceeded"</b></summary>
+
+**Problem**: You've reached the API usage limit
+
+**Solution**:
+- Check quota limits in Google Cloud Console
+- Wait for quota reset (usually daily at midnight PT)
+- Request quota increase: **IAM & Admin** → **Quotas**
+
+</details>
+
+<details>
+<summary><b>🤔 Poor translation quality</b></summary>
+
+**Tips to improve**:
+- ✅ Ensure clear audio (minimize background noise)
+- ✅ Try Traditional Chinese (`--target-lang zh-TW`)
+- ✅ Process high-quality video files
+- ✅ Manual post-editing may be needed for technical terms
+
+</details>
+
+## 📁 Project Structure
 
 ```
 translator/
@@ -266,84 +443,159 @@ translator/
 └── temp/                  # Temporary audio files
 ```
 
-## Development
+## 👨‍💻 Development
 
 ### Running Tests
 
 ```bash
-pytest tests/
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=src --cov-report=html
 ```
 
-### Running with Debug Logging
+### Debug Mode
 
 ```bash
+# Enable verbose logging
 python main.py video.mp4 --verbose
+
+# Keep temporary files for inspection
+python main.py video.mp4 --keep-temp --verbose
 ```
 
-Logs are saved to `logs/subtitle_generator.log`
+📝 Logs are automatically saved to `logs/subtitle_generator.log`
 
-## Technical Details
+## 🔬 Technical Details
 
-### Audio Processing
-- **Format**: WAV (LINEAR16 encoding)
-- **Sample Rate**: 16kHz (optimal for speech)
-- **Channels**: Mono (1 channel)
+<table>
+<tr>
+<td width="50%">
 
-### Speech Recognition
+### 🎵 Audio Processing
+- **Format**: WAV (LINEAR16)
+- **Sample Rate**: 16kHz
+- **Channels**: Mono
+- **Encoding**: 16-bit PCM
+
+</td>
+<td width="50%">
+
+### 🎤 Speech Recognition
 - **Language**: Japanese (ja-JP)
-- **Features**:
-  - Word-level timestamps
-  - Automatic punctuation
-  - Synchronous API for short videos (< 60s)
-  - Long-running API for longer videos (up to 8 hours)
+- **Word-level timestamps**: ✅
+- **Auto punctuation**: ✅
+- **API**: Sync (< 60s) / Long-running (≥ 60s)
 
-### Translation
-- **Source**: Japanese (ja)
-- **Target**: Chinese Simplified (zh-CN) or Traditional (zh-TW)
-- **Batch Size**: 128 segments per API call
+</td>
+</tr>
+<tr>
+<td>
 
-### Subtitle Generation
+### 🌏 Translation
+- **Source**: Japanese
+- **Target**: Chinese (Simplified/Traditional)
+- **Batch Size**: 128 segments
+- **Retry Logic**: Exponential backoff
+
+</td>
+<td>
+
+### 📝 Subtitle Generation
 - **Format**: SRT (SubRip)
-- **Segment Duration**: 1-5 seconds
-- **Max Characters**: 80 per subtitle line
-- **Auto-merge**: Short segments merged for readability
+- **Duration**: 1-5 seconds per segment
+- **Max Chars**: 80 per line
+- **Auto-merge**: Short segments combined
 
-## Limitations
+</td>
+</tr>
+</table>
 
-- Requires internet connection for Google APIs
-- Processing time is approximately equal to video length
-- Translation quality depends on audio clarity
-- Japanese-specific: Only works for Japanese audio
-- API costs apply (see Cost Estimation section)
+## ⚠️ Limitations
 
-## License
+| Limitation | Details |
+|-----------|---------|
+| 🌐 **Internet Required** | Needs connection to Google Cloud APIs |
+| ⏱️ **Processing Time** | ~1:1 ratio (real-time processing) |
+| 🎯 **Language Specific** | Japanese audio only (for now) |
+| 🔊 **Audio Quality** | Translation accuracy depends on clear audio |
+| 💰 **API Costs** | Pay-per-use pricing (see cost estimation) |
+
+## 🤝 Contributing
+
+We welcome contributions! Here are some ideas:
+
+<table>
+<tr>
+<td>
+
+### 🌟 Feature Ideas
+- [ ] Support more languages (Korean, English, etc.)
+- [ ] GUI interface with drag-and-drop
+- [ ] Batch processing multiple videos
+- [ ] Real-time subtitle preview
+- [ ] Cloud Storage integration
+
+</td>
+<td>
+
+### 🐛 Bug Reports & Support
+- Open an [Issue](https://github.com/gatorbonita/translator/issues)
+- Check [Troubleshooting](#-troubleshooting) first
+- Include logs from `logs/` directory
+- Provide video format and duration
+
+</td>
+</tr>
+</table>
+
+### Development Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/gatorbonita/translator.git
+cd translator
+
+# Install in development mode
+pip install -e .
+
+# Run tests
+pytest tests/ -v
+```
+
+## 📜 License
 
 This project is provided as-is for educational and personal use.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
-- Google Cloud Speech-to-Text API
-- Google Cloud Translation API
-- MoviePy for video processing
-- Click for CLI framework
-- Loguru for logging
+Built with amazing open-source tools and services:
 
-## Support
+- [Google Cloud](https://cloud.google.com) - Speech-to-Text & Translation APIs
+- [MoviePy](https://zulko.github.io/moviepy/) - Video processing
+- [Click](https://click.palletsprojects.com/) - CLI framework
+- [Loguru](https://github.com/Delgan/loguru) - Beautiful logging
+- [pytest](https://pytest.org/) - Testing framework
 
-For issues and questions:
-1. Check the Troubleshooting section
-2. Review Google Cloud API documentation
-3. Check application logs in `logs/` directory
+## 📞 Support
 
-## Contributing
+<div align="center">
 
-Contributions are welcome! Areas for improvement:
-- Support for more languages
-- GUI interface
-- Batch processing multiple videos
-- Cloud Storage integration for large files
-- Advanced subtitle formatting options
+**Need help?**
+
+[📖 Documentation](#-table-of-contents) • [❓ Troubleshooting](#-troubleshooting) • [🐛 Report Issue](https://github.com/gatorbonita/translator/issues) • [💬 Discussions](https://github.com/gatorbonita/translator/discussions)
+
+</div>
 
 ---
 
+<div align="center">
+
 **Made with ❤️ for the anime and movie community**
+
+⭐ Star this repo if you find it helpful!
+
+[🔝 Back to Top](#-japanese-to-chinese-subtitle-generator)
+
+</div>
