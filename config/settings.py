@@ -41,6 +41,9 @@ class Settings:
             'chunk_duration_seconds': 300  # 5-minute chunks for very long videos
         }
 
+        # Google Cloud Storage settings (for large audio files > 10MB)
+        self.gcs_bucket_name = os.getenv('GCS_BUCKET_NAME', None)
+
         # Translation settings
         self.translation_config = {
             'source_language': 'ja',  # Japanese

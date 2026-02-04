@@ -106,7 +106,8 @@ def main(video_path, output_path, credentials_path, keep_temp, verbose, target_l
         logger.info("Step 3/5: Transcribing Japanese audio to text...")
         recognizer = SpeechRecognizer(
             credentials_path=settings.credentials_path,
-            language_code=settings.speech_config['language_code']
+            language_code=settings.speech_config['language_code'],
+            gcs_bucket_name=settings.gcs_bucket_name
         )
         japanese_segments = recognizer.transcribe_audio(
             audio_path,
