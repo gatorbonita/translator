@@ -85,7 +85,7 @@ class SpeechRecognizer:
 
             # Transcribe with Whisper
             # word_timestamps=True gives us word-level timing for better subtitle sync
-            segments, info = self.model.transcribe(
+            segments_generator, info = self.model.transcribe(
                 audio_path,
                 language=self.language,
                 beam_size=5,  # Higher beam size = better quality, slower
@@ -101,10 +101,18 @@ class SpeechRecognizer:
                 f"(probability: {info.language_probability:.2%})"
             )
 
+            # CRITICAL FIX: Convert generator to list immediately!
+            # faster-whisper returns a generator that can only be iterated once
+            logger.info("Converting Whisper segments to list...")
+            segments = list(segments_generator)
+            logger.info(f"Whisper found {len(segments)} raw segments covering full audio")
+
             # Process segments into our format
             transcript_segments = []
 
-            for segment in segments:
+            for i, segment in enumerate(segments):
+                if (i + 1) % 20 == 0:
+                    logger.debug(f"Processing segment {i+1}/{len(segments)}...")
                 # Create segment with word-level detail if available
                 if segment.words:
                     # Group words into subtitle-friendly segments
