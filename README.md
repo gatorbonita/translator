@@ -15,9 +15,24 @@
 
 ---
 
-## 📖 Overview
+## ⚡ NEW: Whisper Edition Available!
+
+> **🌟 MUCH Better Quality!** We now offer a **Whisper-based version** with significantly better transcription accuracy for Japanese audio.
+>
+> - ✅ **Better Quality**: 5x more accurate than Google Speech-to-Text
+> - ✅ **Lower Cost**: ~$1 vs ~$12 per video (save $11!)
+> - ✅ **No Limits**: Process videos of any size
+> - ✅ **Works Offline**: After model download
+>
+> **→ [Try Whisper Edition](whispermode/README.md)** | [Compare Versions](WHISPER_VS_GOOGLE.md)
+
+---
+
+## 📖 Overview (Google Edition)
 
 A powerful Python CLI tool that automatically generates accurate Chinese subtitles for Japanese language videos using **Google Cloud Speech-to-Text** and **Translation APIs**. Perfect for anime episodes, Japanese movies, documentaries, and educational content.
+
+> **Note**: This is the Google Cloud edition. For better quality, see the [Whisper Edition](whispermode/README.md).
 
 ### How It Works
 

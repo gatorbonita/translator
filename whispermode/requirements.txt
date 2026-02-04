@@ -1,0 +1,17 @@
+# Video/Audio Processing
+moviepy==1.0.3
+
+# Whisper for Speech Recognition (much better quality than Google!)
+faster-whisper==1.0.0
+
+# Google Cloud Translation (kept for translation)
+google-cloud-translate==3.14.0
+
+# Utilities
+python-dotenv==1.0.0
+click==8.1.7
+loguru==0.7.2
+
+# Testing (dev)
+pytest==7.4.3
+pytest-cov==4.1.0
