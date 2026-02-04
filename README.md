@@ -23,8 +23,9 @@
 > - ✅ **Lower Cost**: ~$1 vs ~$12 per video (save $11!)
 > - ✅ **No Limits**: Process videos of any size
 > - ✅ **Works Offline**: After model download
+> - ✅ **FREE Google Colab**: Zero setup, free GPU
 >
-> **→ [Try Whisper Edition](whispermode/README.md)** | [Compare Versions](WHISPER_VS_GOOGLE.md)
+> **→ [🚀 Try in Google Colab (FREE GPU)](https://colab.research.google.com/github/gatorbonita/translator/blob/main/whispermode/Japanese_to_Chinese_Subtitles_Colab.ipynb)** | [Local Install](whispermode/README.md) | [Compare Versions](WHISPER_VS_GOOGLE.md)
 
 ---
 

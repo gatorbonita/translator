@@ -4,6 +4,28 @@
 
 This version uses **OpenAI's Whisper** instead of Google Speech-to-Text for transcription. Whisper provides **significantly better accuracy** for Japanese audio, especially for anime, movies, and casual speech.
 
+## 🚀 Quick Options
+
+### Option 1: Google Colab (Recommended for Beginners) ⭐
+
+**FREE GPU • Zero Setup • Run in Browser**
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gatorbonita/translator/blob/main/whispermode/Japanese_to_Chinese_Subtitles_Colab.ipynb)
+
+**Perfect for:**
+- ✅ First-time users
+- ✅ No Python installation needed
+- ✅ Free GPU access (3-5x faster)
+- ✅ No local setup required
+
+**Just click the badge above and follow the notebook!**
+
+### Option 2: Local Installation
+
+**For regular use and customization**
+
+See [Quick Start](#-quick-start) section below.
+
 ## 🆚 Whisper vs Google Speech-to-Text
 
 | Feature | Whisper (This Version) | Google Speech-to-Text |
